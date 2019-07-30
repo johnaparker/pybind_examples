@@ -1,0 +1,3 @@
+include cpp/CMakeLists.txt
+recursive-include cpp/pybind11/include *.h
+recursive-include cpp/src *
