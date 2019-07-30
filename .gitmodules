@@ -1,6 +1,6 @@
-[submodule "cpp_submodule/cpp/pybind11"]
-	path = cpp_submodule/cpp/pybind11
-	url = https://github.com/pybind/pybind11.git
 [submodule "cpp_only/pybind11"]
 	path = cpp_only/pybind11
+	url = https://github.com/pybind/pybind11.git
+[submodule "cpp_submodule/pybind11"]
+	path = cpp_submodule/pybind11
 	url = https://github.com/pybind/pybind11.git

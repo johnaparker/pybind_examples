@@ -85,7 +85,7 @@ setup(
     long_description_content_type='text/markdown',
     install_requires=REQUIRED,
     include_package_data=True,
-    ext_modules=[CMakeExtension('foo/cpp', './cpp')],
+    ext_modules=[CMakeExtension('foo/cpp')],
     cmdclass={
         'build_ext': builder_ext,
     },
