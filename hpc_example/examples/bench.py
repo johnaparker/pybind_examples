@@ -20,6 +20,3 @@ ipython.magic('timeit dp.dot_product(x, y)')
 
 print('cpp (openmp)')
 ipython.magic('timeit dp.omp_dot_product(x, y)')
-
-print('cpp (mpi)')
-ipython.magic('timeit dp.mpi_dot_product(x, y)')
