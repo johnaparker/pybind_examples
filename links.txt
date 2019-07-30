@@ -1,0 +1,12 @@
+https://stackoverflow.com/questions/25601758/how-to-consume-an-mpi4py-application-from-a-serial-python-script/50022229#50022229
+Spawning MPI processes with mpi4py so that everything else runs in serial
+
+https://stackoverflow.com/questions/49259704/pybind11-possible-to-use-mpi4py
+A follow-up example on spawning MPI processes and using them on the C++ side with Pybind11
+
+https://github.com/torstem/demo-cuda-pybind11
+https://github.com/PWhiddy/pybind11-cuda
+Two examples that use CUDA + pybind11
+
+https://github.com/dean0x7d/pybinding
+A nice example of an HPC code using pybind11
