@@ -4,3 +4,6 @@
 [submodule "cpp_submodule/pybind11"]
 	path = cpp_submodule/pybind11
 	url = https://github.com/pybind/pybind11.git
+[submodule "hpc_example/pybind11"]
+	path = hpc_example/pybind11
+	url = https://github.com/pybind/pybind11.git
