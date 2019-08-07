@@ -20,3 +20,6 @@ ipython.magic('timeit dp.dot_product(x, y)')
 
 print('cpp (openmp)')
 ipython.magic('timeit dp.omp_dot_product(x, y)')
+
+print('cpp (CUDA)')
+ipython.magic('timeit dp.gpu_dot_product(x, y)')

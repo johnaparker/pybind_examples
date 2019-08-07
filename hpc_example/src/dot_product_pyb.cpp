@@ -27,3 +27,10 @@ void bind_mpi_dot_product(py::module &m) {
         dot product of x and y (MPI)
     )pbdoc");
 }
+
+void bind_gpu_dot_product(py::module &m) {
+    m.def("gpu_dot_product", gpu_dot_product, 
+           "x"_a, "y"_a, R"pbdoc(
+        dot product of x and y (CUDA)
+    )pbdoc");
+}

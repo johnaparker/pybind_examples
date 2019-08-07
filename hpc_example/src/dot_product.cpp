@@ -71,3 +71,12 @@ double mpi_dot_product(const Ref<const Array> &x, const Ref<const Array> &y) {
 
     return final_sum;
 }
+
+double gpu_dot_product(const Ref<const Array> &x, const Ref<const Array> &y) {
+    int size = x.size();
+    const double *x_p = x.data();
+    const double *y_p = y.data();
+
+    double sum = gpu_full_dot_product(x_p, y_p, size);
+    return sum;
+}

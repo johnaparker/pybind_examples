@@ -7,6 +7,7 @@ namespace py = pybind11;
 void bind_dot_product(py::module &);
 void bind_omp_dot_product(py::module &);
 void bind_mpi_dot_product(py::module &);
+void bind_gpu_dot_product(py::module &);
 
 PYBIND11_MODULE(cpp, m) {
     m.doc() = R"pbdoc(
@@ -22,4 +23,5 @@ PYBIND11_MODULE(cpp, m) {
     bind_dot_product(m);
     bind_omp_dot_product(m);
     bind_mpi_dot_product(m);
+    bind_gpu_dot_product(m);
 }

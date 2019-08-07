@@ -12,15 +12,20 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -Werror")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 find_package(OpenMP REQUIRED)
 find_package(MPI REQUIRED)
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+find_package(CUDA REQUIRED)
 
 include_directories(${MPI_INCLUDE_PATH})
 add_subdirectory(pybind11)
 
 set(SOURCES ${SOURCES} 
     src/dot_product.cpp
+)
+
+set(CUDA_SOURCES
+    src/dot_product_gpu.cu
 )
 
 set(BINDINGS
@@ -32,7 +37,9 @@ set(BINDINGS
 #target_compile_options(my_mpi_bin PRIVATE ${MPI_CXX_COMPILE_FLAGS} my_compile_flags)
 #target_link_libraries(my_mpi_bin ${MPI_CXX_LIBRARIES} ${MPI_CXX_LINK_FLAGS} my_link_flags)
 
+cuda_add_library(gpu SHARED "${CUDA_SOURCES}")
+
 add_library(cpp MODULE "${SOURCES}" "${BINDINGS}")
-target_link_libraries(cpp PRIVATE pybind11::module OpenMP::OpenMP_CXX Eigen3::Eigen ${MPI_LIBRARIES})
+target_link_libraries(cpp PRIVATE pybind11::module OpenMP::OpenMP_CXX Eigen3::Eigen ${MPI_LIBRARIES} gpu)
 set_target_properties(cpp PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
                                      SUFFIX "${PYTHON_MODULE_EXTENSION}")

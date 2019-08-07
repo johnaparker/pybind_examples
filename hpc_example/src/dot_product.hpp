@@ -10,4 +10,7 @@ double dot_product(const Ref<const Array> &x, const Ref<const Array> &y);
 double omp_dot_product(const Ref<const Array> &x, const Ref<const Array> &y);
 double mpi_dot_product(const Ref<const Array> &x, const Ref<const Array> &y);
 
+double gpu_full_dot_product(const double *a, const double *b, int N);
+double gpu_dot_product(const Ref<const Array> &x, const Ref<const Array> &y);
+
 #endif
