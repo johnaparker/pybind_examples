@@ -13,7 +13,7 @@ find_package(OpenMP REQUIRED)
 find_package(MPI REQUIRED)
 
 include_directories(${MPI_INCLUDE_PATH})
-add_subdirectory(pybind11)
+add_subdirectory(third_party/pybind11)
 
 set(SOURCES ${SOURCES} 
     src/dot_product.cpp
