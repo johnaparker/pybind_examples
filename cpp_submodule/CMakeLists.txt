@@ -1,17 +1,11 @@
 cmake_minimum_required(VERSION 3.1)
 project(cpp)
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif()
-
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -Werror")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -mavx -flto -fPIC")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS_DEBUG "-Werror -Og")
 
-#find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 add_subdirectory(pybind11)
-include_directories(src)
 
 set(SOURCES ${SOURCES} 
     src/special.cpp
