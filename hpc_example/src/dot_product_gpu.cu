@@ -14,15 +14,10 @@ __global__ void gpu_partial_dot_product( double *a, double *b, double *c, int N)
         temp += a[tid] * b[tid];
         tid += blockDim.x * gridDim.x;
     }
-    
-    // set the cache values
     cache[cacheIndex] = temp;
     
-    // synchronize threads in this block
     __syncthreads();
 
-    // for reductions, threadsPerBlock must be a power of 2
-    // because of the following code
     int i = blockDim.x/2;
     while (i != 0) {
         if (cacheIndex < i)
@@ -38,62 +33,39 @@ __global__ void gpu_partial_dot_product( double *a, double *b, double *c, int N)
 double gpu_full_dot_product(const double *a, const double *b, int N) {
     const int blocksPerGrid = imin( 256, (N+threadsPerBlock-1) / threadsPerBlock );
 
-    double *partial_c;
-    double *dev_a, *dev_b, *dev_partial_c;
+    double *partial_sum;
+    double *dev_a, *dev_b, *dev_partial_sum;
 
     // allocate memory on the cpu side
-    partial_c = (double*)malloc( blocksPerGrid*sizeof(double) );
+    partial_sum = (double*)malloc( blocksPerGrid*sizeof(double) );
 
     // allocate the memory on the GPU
-    cudaMalloc( (void**)&dev_a,
-                              N*sizeof(double) );
-    cudaMalloc( (void**)&dev_b,
-                              N*sizeof(double) );
-    cudaMalloc( (void**)&dev_partial_c,
-                              blocksPerGrid*sizeof(double) );
-
-    cudaEvent_t     start, stop;
-    cudaEventCreate( &start );
-    cudaEventCreate( &stop );
-    cudaEventRecord( start, 0 );
-
+    cudaMalloc((void**)&dev_a, N*sizeof(double));
+    cudaMalloc((void**)&dev_b, N*sizeof(double));
+    cudaMalloc((void**)&dev_partial_sum, blocksPerGrid*sizeof(double));
 
     // copy the arrays 'a' and 'b' to the GPU
-    cudaMemcpy( dev_a, a, N*sizeof(double),
-                              cudaMemcpyHostToDevice );
-    cudaMemcpy( dev_b, b, N*sizeof(double),
-                              cudaMemcpyHostToDevice ); 
+    cudaMemcpy( dev_a, a, N*sizeof(double), cudaMemcpyHostToDevice);
+    cudaMemcpy( dev_b, b, N*sizeof(double), cudaMemcpyHostToDevice); 
 
-    gpu_partial_dot_product<<<blocksPerGrid,threadsPerBlock>>>( dev_a, dev_b,
-                                            dev_partial_c, N);
+    gpu_partial_dot_product<<<blocksPerGrid,threadsPerBlock>>>(dev_a, dev_b,
+                                            dev_partial_sum, N);
 
-    cudaEventRecord( stop, 0 );
-    cudaEventSynchronize( stop );
-    float   elapsedTime;
-    cudaEventElapsedTime( &elapsedTime,
-                                        start, stop );
+    cudaMemcpy(partial_sum, dev_partial_sum,
+                    blocksPerGrid*sizeof(double),
+                    cudaMemcpyDeviceToHost);
 
-    // copy the array 'c' back from the GPU to the CPU
-    cudaMemcpy( partial_c, dev_partial_c,
-                              blocksPerGrid*sizeof(double),
-                              cudaMemcpyDeviceToHost );
-
-    // finish up on the CPU side
-    double c = 0;
+    double sum = 0;
     for (int i=0; i<blocksPerGrid; i++) {
-        c += partial_c[i];
+        sum += partial_sum[i];
     }
 
-    cudaEventDestroy( start );
-    cudaEventDestroy( stop );
-
-    // free memory on the gpu side
-    cudaFree( dev_a );
-    cudaFree( dev_b );
-    cudaFree( dev_partial_c );
+    cudaFree(dev_a);
+    cudaFree(dev_b);
+    cudaFree(dev_partial_sum);
 
     // free memory on the cpu side
-    free( partial_c );
+    free(partial_sum);
 
-    return c;
+    return sum;
 }
