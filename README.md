@@ -15,3 +15,9 @@ It demonstrates computing the dot product of two arrays using:
 + OpenMP parallelization C++
 + MPI parallelization C++
 + GPU CUDA C++
+
+## misc
+Miscellaneous examples, including:
++ Interfacing with Eigen Tensors 
++ A 2D grid interpolation to speedup SciPy's RegularGridInterpolator
++ Interfacing with CUDA's FFT library, CUFFT, and comparing performance to NumPy and PyFFTW
