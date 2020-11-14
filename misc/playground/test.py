@@ -1,0 +1,2 @@
+import play
+play.f()
